@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -16,7 +16,27 @@ export const Contact = () => {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    console.log(data.email, data.subject, data.message);
+    const { email, subject, message } = data;
+    fetch("https://eohlne6xk6bi1s.m.pipedream.net", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", 
+      },
+      body: JSON.stringify({ email, subject, message }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); 
+        } else {
+          throw new Error("Failed to make the POST request");
+        }
+      })
+      .then((data) => {
+        console.log(data); 
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
